@@ -1,0 +1,891 @@
+/* src/components/ManageDevices.module.css */
+
+:root {
+  /* "CyberSynth" Theme - Frosted Dark with Vibrant Accents */
+  --color-bg-primary: #08101E; /* Very deep, dark purple-blue for main background */
+  --color-bg-secondary: rgba(25, 35, 45, 0.4); /* Translucent charcoal for panels (frosted glass base) */
+  --color-bg-tertiary: #1E1242; /* A shade for elements like table headers, subtle contrasts */
+  --color-text-primary: #E0ECF8; /* Soft electric white for main text */
+  --color-text-secondary: #A8B8C8; /* Muted cool gray for secondary text */
+  --color-text-light: #C0C8D0; /* Lighter secondary text for softer emphasis */
+
+  --color-accent-blue: #00CFFF; /* Bright Electric Cyan for primary actions/focus */
+  --color-accent-green: #39FF14; /* Vibrant Neon Green for success/simulated */
+  --color-accent-red: #FF4500; /* Electric Pink-Red for danger/delete */
+  --color-accent-yellow: #FFFF00; /* Pure Yellow for warnings */
+  --color-accent-orange: #FFB300; /* For 'Needs Attention' */
+
+  --color-border-subtle: rgba(70, 0, 150, 0.3); /* Subtle dark purple border */
+  --color-border-bright: #00CFFF; /* Bright border for focus/active states */
+
+  --color-shadow: rgba(0, 0, 0, 0.7); /* Deeper shadow for depth */
+  --color-overlay: rgba(0, 0, 0, 0.95); /* Near-black overlay for modals */
+  --color-warning-bg: rgba(255, 179, 0, 0.2); /* Background for warning messages/status */
+  --color-error-bg: rgba(255, 69, 0, 0.2); /* Background for error messages/status */
+  --color-success-bg: rgba(57, 255, 136, 0.2); /* Background for online/success status */
+
+  /* Spacing - Optimized for the reference layout */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px; /* For large section gaps */
+  --spacing-3xl: 64px; /* For very large padding/margins */
+
+  /* Border Radius - Consistent and slightly rounded */
+  --border-radius-sm: 6px;
+  --border-radius-md: 12px; /* Slightly larger for main cards */
+  --border-radius-lg: 18px;
+
+  /* Font Sizes - Adjusted for better hierarchy and readability */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px; /* Panel titles */
+  --font-size-xl: 28px; /* Main section titles like "Devices" */
+  --font-size-2xl: 40px; /* Dashboard main title "Device Management" */
+  --font-size-3xl: 60px; /* For the big numbers in summary cards */
+}
+
+/* Base Body styles */
+body {
+  margin: 0;
+  font-family: 'Inter', 'Helvetica Neue', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Component Container - Main dashboard wrapper */
+.manageDevicesContainer {
+  min-height: 100vh;
+  background-color: var(--color-bg-primary);
+  /* Subtle atmospheric background gradients */
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(20,0,60,0.2) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(0,20,60,0.2) 0%, transparent 50%);
+  background-blend-mode: overlay;
+  color: var(--color-text-primary);
+  padding: var(--spacing-xl) var(--spacing-2xl); /* Top/bottom, Left/Right */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Layout container - Controls overall content width */
+.maxWidth7xl {
+  max-width: 1600px; /* Wider content area to match reference */
+  width: 100%;
+  margin: 0 auto; /* Center the content */
+}
+
+/* Dashboard Header Section */
+.dashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  margin-bottom: var(--spacing-lg);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.headerIcon {
+  font-size: var(--font-size-xl);
+  color: var(--color-accent-blue);
+  opacity: 0.8;
+}
+
+.headerTitles {
+  display: flex;
+  flex-direction: column;
+}
+
+.h1Title {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--color-text-primary);
+  text-shadow: 0 0 10px var(--color-accent-blue);
+  line-height: 1.2;
+}
+
+.dashboardSubtitle {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+/* General Button Styles */
+.buttonBase {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+.buttonBase:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  border-color: transparent;
+}
+
+/* Specific Button Styles */
+.buttonPrimary {
+  background-color: var(--color-accent-blue);
+  color: var(--color-bg-primary);
+  box-shadow: 0 4px 10px rgba(0, 224, 255, 0.3);
+}
+.buttonPrimary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--color-accent-blue) 90%, white);
+  box-shadow: 0 6px 15px rgba(0, 224, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.addDeviceButton { /* For the + Add Device button */
+  background-color: var(--color-accent-blue);
+  color: var(--color-bg-primary);
+  box-shadow: 0 4px 10px rgba(0, 224, 255, 0.3);
+  padding: var(--spacing-sm) var(--spacing-lg); /* Slightly more padding */
+  border-radius: var(--border-radius-sm);
+}
+.addDeviceButton:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--color-accent-blue) 90%, white);
+  box-shadow: 0 6px 15px rgba(0, 224, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.userProfileButton {
+  background: none;
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
+  border-radius: 50%;
+  width: 40px; /* Fixed size for circular button */
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+}
+.userProfileButton:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-primary);
+}
+
+
+/* Summary Cards Grid */
+.summaryCardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Flexible columns */
+  gap: var(--spacing-lg); /* Space between cards */
+  margin-bottom: var(--spacing-2xl); /* Space below the summary section */
+}
+
+.summaryCard {
+  background-color: var(--color-bg-secondary); /* Frosted background */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: 0 6px 20px var(--color-shadow);
+  border: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px; /* Ensure consistent height */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summaryCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px color-mix(in srgb, var(--color-shadow) 90%, black);
+}
+
+.summaryCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+}
+
+.summaryCardIcon {
+  font-size: var(--font-size-xl);
+  opacity: 0.7;
+}
+.summaryCardIcon.total { color: var(--color-accent-blue); }
+.summaryCardIcon.online { color: var(--color-accent-green); }
+.summaryCardIcon.attention { color: var(--color-accent-orange); }
+.summaryCardIcon.commands { color: var(--color-accent-red); } /* Using red for commands as per ref */
+
+
+.summaryCardCount {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text-primary);
+  text-shadow: 0 0 5px rgba(255,255,255,0.2);
+}
+.summaryCardCount.placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+
+.summaryCardLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* Main Content Area - Split Layout */
+.mainContentGrid {
+  display: grid;
+  grid-template-columns: 1fr; /* Default to single column for mobile */
+  gap: var(--spacing-2xl); /* Gap between left/right panels */
+  flex-grow: 1; /* Allow content to fill available height */
+}
+
+@media (min-width: 1024px) {
+  .mainContentGrid {
+    grid-template-columns: 0.8fr 1.2fr; /* Left panel slightly smaller than right */
+  }
+}
+
+/* Left Panel - Devices List */
+.devicesPanel {
+  background-color: var(--color-bg-secondary);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xl);
+  box-shadow: 0 6px 20px var(--color-shadow);
+  border: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+}
+
+.devicesPanelTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-primary);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--color-accent-blue) 40%, transparent);
+}
+
+.searchAndFilter {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.searchBar {
+  flex-grow: 1;
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--spacing-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+}
+
+.searchInput {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) var(--spacing-xl); /* Left padding for icon */
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--border-radius-sm);
+  outline: none;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.searchInput::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+.searchInput:focus {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-blue) 40%, transparent);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.searchInput:disabled {
+  background-color: rgba(255, 255, 255, 0.04);
+  cursor: not-allowed;
+}
+
+.filterButtonsGroup {
+  display: flex;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden; /* For segmented look */
+}
+
+.filterButton {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  border: none; /* Removed individual borders */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.filterButton.active {
+  background-color: var(--color-accent-blue);
+  color: var(--color-bg-primary);
+}
+
+.filterButton:not(.active):hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-primary);
+}
+
+/* Device List container for cards */
+.deviceList {
+  flex-grow: 1; /* Allows list to fill remaining height */
+  overflow-y: auto; /* Scrollable if many devices */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm); /* Space between individual device cards */
+}
+
+/* Individual Device Card */
+.deviceCard {
+  background-color: rgba(255, 255, 255, 0.05); /* Slightly lighter background than panel */
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-md);
+  display: grid; /* Using CSS Grid for layout within the card */
+  grid-template-columns: auto 1fr auto; /* Icon, Details, Status/Actions */
+  align-items: center;
+  gap: var(--spacing-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.deviceCard:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-border-subtle);
+}
+
+.deviceCard.selected {
+  background-color: rgba(0, 224, 255, 0.15); /* Accent translucent highlight when selected */
+  border-color: var(--color-accent-blue); /* Glowing border */
+}
+
+.deviceIcon {
+  font-size: var(--font-size-xl);
+  color: var(--color-accent-blue);
+  opacity: 0.8;
+}
+
+.deviceDetailsMain {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.deviceName {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.deviceSubText {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.deviceStatusActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-xs);
+}
+
+.deviceStatus {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  text-transform: capitalize; /* Ensure status text looks good */
+}
+.deviceStatus.online {
+  background-color: var(--color-success-bg);
+  color: var(--color-accent-green);
+}
+.deviceStatus.offline {
+  background-color: var(--color-error-bg);
+  color: var(--color-accent-red);
+}
+.deviceStatus.warning {
+  background-color: var(--color-warning-bg);
+  color: var(--color-accent-orange);
+}
+
+/* Action buttons within device card */
+.cardActionButton {
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius-sm);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cardActionButton:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-primary);
+}
+.cardActionButton.delete:hover:not(:disabled) {
+  background-color: rgba(255, 64, 129, 0.2);
+  color: var(--color-accent-red);
+}
+.cardActionButton.powerOn:hover:not(:disabled) {
+  background-color: rgba(57, 255, 136, 0.2);
+  color: var(--color-accent-green);
+}
+.cardActionButton.powerOff:hover:not(:disabled) {
+  background-color: rgba(255, 64, 129, 0.2);
+  color: var(--color-accent-red);
+}
+
+
+/* Right Panel - Device Details/No Device Selected */
+.deviceDetailPanel {
+  background-color: var(--color-bg-secondary);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xl);
+  box-shadow: 0 6px 20px var(--color-shadow);
+  border: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically if no device selected */
+  align-items: center; /* Center content horizontally if no device selected */
+  text-align: center;
+  min-height: 300px; /* Ensure it has some height */
+}
+
+.noDeviceSelected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  color: var(--color-text-secondary);
+}
+
+.noDeviceIcon {
+  font-size: var(--font-size-3xl);
+  color: var(--color-border-subtle);
+}
+
+.noDeviceText {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+}
+
+/* Device Details Content (when a device is selected) */
+.selectedDeviceContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.selectedDeviceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.selectedDeviceName {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.buttonClose {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: 50%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.buttonClose:hover:not(:disabled) {
+  color: var(--color-accent-red);
+  background-color: rgba(255, 64, 129, 0.1);
+}
+
+
+.deviceDetails {
+  font-size: var(--font-size-md);
+  line-height: 1.7;
+  display: grid; /* Use grid for aligned detail pairs */
+  grid-template-columns: auto 1fr; /* Label, Value */
+  row-gap: var(--spacing-sm); /* Space between rows */
+  column-gap: var(--spacing-lg); /* Space between label and value */
+  margin-bottom: var(--spacing-lg);
+  text-align: left; /* Align text within details */
+}
+.deviceDetails strong {
+  font-weight: 600;
+  color: var(--color-text-light); /* Lighter emphasis for labels */
+  text-align: right; /* Align labels to the right */
+}
+.deviceDetails span { /* For the actual values */
+  color: var(--color-text-primary);
+}
+
+
+/* Command Section */
+.commandSection {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border-subtle); /* Separator line */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.commandTitle {
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.commandButtonsGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.commandButton {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-text-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+.commandButton:hover:not(:disabled) {
+  background-color: rgba(0, 224, 255, 0.15);
+  border-color: var(--color-accent-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 0 5px color-mix(in srgb, var(--color-accent-blue) 40%, transparent);
+}
+
+.messageInputGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  margin-top: var(--spacing-md);
+}
+
+.messageInput {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-primary);
+  outline: none;
+  font-size: var(--font-size-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.messageInput::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+.messageInput:focus {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-blue) 40%, transparent);
+}
+.messageInput:disabled {
+  background-color: rgba(255, 255, 255, 0.04);
+  cursor: not-allowed;
+}
+
+/* Command Response Section */
+.commandResponseSection {
+  margin-top: var(--spacing-lg); /* Adjusted from xl to lg for tighter spacing */
+  background-color: var(--color-bg-primary); /* Darker background for code */
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--color-border-subtle);
+  height: 150px; /* Fixed height for consistency */
+  overflow-y: auto; /* Make it scrollable */
+}
+
+.commandResponseTitle {
+  font-size: var(--font-size-sm); /* Smaller title for response section */
+  font-weight: 700;
+  color: var(--color-accent-blue);
+  margin-bottom: var(--spacing-xs);
+}
+
+.commandResponsePre {
+  background-color: transparent; /* Inherit from parent */
+  padding: 0;
+  border-radius: 0;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-size: var(--font-size-sm);
+  color: var(--color-accent-green);
+  overflow-x: auto;
+  white-space: pre-wrap;
+  border: none;
+  line-height: 1.4;
+}
+
+/* Modal Specific Styles - Consistent with overall theme */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-overlay);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background-color: var(--color-bg-secondary);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 12px 30px var(--color-shadow);
+  max-width: 650px;
+  width: 90%;
+  position: relative;
+  animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  border: 1px solid var(--color-border-subtle);
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modalCloseButton {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xl); /* Larger icon for easy targeting */
+  line-height: 1;
+  padding: var(--spacing-sm);
+  border-radius: 50%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.modalCloseButton:hover:not(:disabled) {
+  color: var(--color-accent-red);
+  background-color: rgba(255, 64, 129, 0.1);
+}
+
+/* Prevent background scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Utility/State Messages - Clear and informative */
+.loadingMessage,
+.emptyMessage,
+.errorMessage {
+  text-align: center;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  margin-top: var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.loadingMessage {
+  color: var(--color-accent-blue);
+  background-color: color-mix(in srgb, var(--color-accent-blue) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent-blue) 30%, transparent);
+  text-shadow: 0 0 5px color-mix(in srgb, var(--color-accent-blue) 40%, transparent);
+}
+
+.emptyMessage {
+  color: var(--color-text-secondary);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px dashed var(--color-border-subtle);
+}
+
+.errorMessage {
+  color: var(--color-accent-red);
+  background-color: color-mix(in srgb, var(--color-accent-red) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent-red) 30%, transparent);
+  text-align: left;
+  justify-content: flex-start;
+}
+
+/* Icon Spacing & Alignment */
+.iconLeftMargin {
+  margin-left: var(--spacing-xs);
+}
+.iconRightMargin {
+  margin-right: var(--spacing-xs);
+}
+.iconSizeMd {
+  font-size: var(--font-size-md);
+}
+.iconSizeLg {
+  font-size: var(--font-size-lg);
+}
+
+/* Ensure icons within elements are vertically aligned */
+.buttonBase svg,
+.summaryCardIcon svg,
+.searchIcon svg,
+.deviceIcon svg,
+.cardActionButton svg, /* Updated */
+.modalCloseButton svg,
+.loadingMessage svg,
+.emptyMessage svg,
+.errorMessage svg {
+  vertical-align: middle;
+  line-height: 1; /* Helps with precise centering */
+}
+
+/* Form Specific Styles for Modal */
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.formInput {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-primary);
+  outline: none;
+  font-size: var(--font-size-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.formInput::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+.formInput:focus {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-blue) 40%, transparent);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.formInput:disabled {
+  background-color: rgba(255, 255, 255, 0.04);
+  cursor: not-allowed;
+}
+
+.formButtons {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+.buttonAddReal,
+.buttonAddSimulated {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+.buttonAddReal {
+  background-color: var(--color-accent-green); /* Green for 'Real' */
+  color: var(--color-bg-primary);
+  box-shadow: 0 4px 10px rgba(57, 255, 136, 0.3);
+}
+.buttonAddReal:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--color-accent-green) 90%, white);
+  box-shadow: 0 6px 15px rgba(57, 255, 136, 0.4);
+  transform: translateY(-1px);
+}
+
+.buttonAddSimulated {
+  background-color: var(--color-accent-blue); /* Blue for 'Simulated' */
+  color: var(--color-bg-primary);
+  box-shadow: 0 4px 10px rgba(0, 224, 255, 0.3);
+}
+.buttonAddSimulated:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--color-accent-blue) 90%, white);
+  box-shadow: 0 6px 15px rgba(0, 224, 255, 0.4);
+  transform: translateY(-1px);
+}
