@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta
     name="description"
     content="React Device Admin Panel"
   />
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+  <!-- SVG Favicon: Modern browsers will use this for a crisp, scalable icon -->
+  <!-- Ensure your raspberry-pi-logo.svg file is in the 'public' directory -->
+  <link rel="icon" href="%PUBLIC_URL%/raspberry-pi-logo.svg" type="image/svg+xml" />
+
+  <!-- Fallback PNG Favicon: For browsers that don't fully support SVG favicons -->
+  <!-- You might still want a 192x192px PNG in your 'public' directory -->
+  <link rel="icon" href="%PUBLIC_URL%/raspberry-pi-logo192.png" sizes="192x192" type="image/png" />
+
+  <!-- Apple Touch Icon: For iOS devices. Typically a 192x192px PNG. -->
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/raspberry-pi-logo192.png" />
+
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

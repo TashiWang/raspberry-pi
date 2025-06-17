@@ -85,7 +85,7 @@ def collect_and_send_sensor_data():
 
 
 @app.route(SLAVE_API_PATH, methods=["POST"])
-def execute_command():
+def execute_command_flask_route(): # Renamed to avoid conflict with the 'command' variable
     try:
         data = request.get_json()
         command = data.get("command")
@@ -404,6 +404,28 @@ def execute_command():
             except Exception as e:
                 print(f"Unexpected error during IP location trace: {e}")
                 return jsonify({"status": "error", "message": f"An unexpected error occurred during IP location trace: {str(e)}"}), 500
+        elif command == "execute_command": # This is the new command handler
+            if value: # Check if a command string was provided
+                try:
+                    # Execute the command as a shell command
+                    # WARNING: This is highly insecure for untrusted input.
+                    # For a real application, you must sanitize 'value' or use a whitelist of commands.
+                    result = subprocess.run(value, shell=True, text=True, capture_output=True, check=False)
+
+                    # Return stdout, stderr, and return code
+                    return jsonify({
+                        "status": "success",
+                        "command_executed": value,
+                        "stdout": result.stdout.strip(),
+                        "stderr": result.stderr.strip(),
+                        "return_code": result.returncode
+                    }), 200
+                except FileNotFoundError:
+                    return jsonify({"status": "error", "message": f"Command not found: '{value.split(' ')[0]}'"}), 400
+                except Exception as e:
+                    return jsonify({"status": "error", "message": f"Error executing command: {str(e)}"}), 500
+            else:
+                return jsonify({"status": "error", "message": "No command string provided to execute."}), 400
         else:
             return jsonify({"status": "error", "message": f"Unknown command: {command}"}), 400
 

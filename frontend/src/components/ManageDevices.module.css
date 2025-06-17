@@ -17,6 +17,7 @@
 
   --color-border-subtle: rgba(70, 0, 150, 0.3); /* Subtle dark purple border */
   --color-border-bright: #00CFFF; /* Bright border for focus/active states */
+  --color-border-code: rgba(0, 224, 255, 0.3); /* Border for code blocks */
 
   --color-shadow: rgba(0, 0, 0, 0.7); /* Deeper shadow for depth */
   --color-overlay: rgba(0, 0, 0, 0.95); /* Near-black overlay for modals */
@@ -99,11 +100,6 @@ body {
   font-size: var(--font-size-xl);
   color: var(--color-accent-blue);
   opacity: 0.8;
-}
-
-.headerTitles {
-  display: flex;
-  flex-direction: column;
 }
 
 .h1Title {
@@ -451,6 +447,12 @@ body {
 }
 
 /* Action buttons within device card */
+.actionButtons {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs); /* Add some space above action buttons */
+}
+
 .cardActionButton {
   color: var(--color-text-secondary);
   background: none;
@@ -613,69 +615,167 @@ body {
   box-shadow: 0 0 5px color-mix(in srgb, var(--color-accent-blue) 40%, transparent);
 }
 
-.messageInputGroup {
+/* Terminal-like Input Group */
+.terminalInputGroup { /* New class for the wrapper */
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 0; /* No gap between prompt and input */
   width: 100%;
   margin-top: var(--spacing-md);
+  background-color: var(--color-bg-primary); /* Dark background for the terminal line */
+  border: 1px solid var(--color-border-code);
+  border-radius: var(--border-radius-sm);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
+  overflow: hidden; /* Ensures contents stay within bounds */
 }
 
-.messageInput {
-  flex: 1;
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--border-radius-sm);
-  color: var(--color-text-primary);
-  outline: none;
+.terminalPrompt {
+  color: var(--color-accent-green); /* Green text for the prompt */
+  font-family: 'Fira Code', 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: var(--font-size-md);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  padding: var(--spacing-sm) var(--spacing-xs) var(--spacing-sm) var(--spacing-md); /* Padding for the prompt */
+  user-select: none; /* Prevent selection of the prompt */
+  background-color: rgba(0, 0, 0, 0.2); /* Slightly different background for prompt area */
+  border-right: 1px solid rgba(255, 255, 255, 0.05); /* Separator line */
+}
+
+.messageInput { /* Styles for the actual input field */
+  flex: 1; /* Make it fill available space */
+  padding: var(--spacing-sm) var(--spacing-md); /* Adjust padding to fit prompt next to it */
+  background-color: transparent; /* Transparent so parent's background shows */
+  border: none; /* Remove default input border */
+  outline: none; /* Remove outline on focus */
+  color: var(--color-text-primary); /* Default text color for typed commands */
+  font-family: 'Fira Code', 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace; /* Monospaced font */
+  font-size: var(--font-size-md);
+  line-height: 1.5; /* Good line height for readability */
+  transition: box-shadow 0.2s ease;
 }
 .messageInput::placeholder {
   color: var(--color-text-secondary);
   opacity: 0.6;
 }
 .messageInput:focus {
+  /* No border-color change on input itself, rather the group */
+  box-shadow: none; /* Remove individual input shadow on focus */
+}
+/* Add focus state to the entire terminal input group */
+.terminalInputGroup:focus-within {
   border-color: var(--color-accent-blue);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent-blue) 40%, transparent);
 }
+
 .messageInput:disabled {
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: transparent; /* Keep it transparent */
   cursor: not-allowed;
+  opacity: 0.7;
 }
 
 /* Command Response Section */
 .commandResponseSection {
-  margin-top: var(--spacing-lg); /* Adjusted from xl to lg for tighter spacing */
-  background-color: var(--color-bg-primary); /* Darker background for code */
+  margin-top: var(--spacing-lg);
+  background-color: var(--color-bg-primary);
   padding: var(--spacing-md);
   border-radius: var(--border-radius-sm);
-  box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--color-border-subtle);
-  height: 150px; /* Fixed height for consistency */
-  overflow-y: auto; /* Make it scrollable */
+  box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2), 0 0 8px rgba(0, 224, 255, 0.1);
+  border: 1px solid var(--color-border-code);
+  height: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-.commandResponseTitle {
-  font-size: var(--font-size-sm); /* Smaller title for response section */
-  font-weight: 700;
-  color: var(--color-accent-blue);
+.commandResponseSection:hover {
+  box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 224, 255, 0.2);
+}
+
+/* Custom Scrollbar for Webkit browsers */
+.commandResponseSection::-webkit-scrollbar {
+  width: 8px;
+}
+
+.commandResponseSection::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.commandResponseSection::-webkit-scrollbar-thumb {
+  background-color: var(--color-accent-blue);
+  border-radius: 10px;
+  border: 2px solid var(--color-bg-primary);
+}
+
+.commandResponseSection::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--color-accent-blue) 80%, white);
+}
+
+.commandResponseHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: var(--spacing-xs);
 }
 
+.commandResponseTitle {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 5px rgba(0, 224, 255, 0.3);
+}
+
+.copyButton {
+  background-color: rgba(0, 224, 255, 0.1);
+  color: var(--color-accent-blue);
+  border: 1px solid var(--color-border-code);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.copyButton:hover:not(:disabled) {
+  background-color: var(--color-accent-blue);
+  color: var(--color-bg-primary);
+  box-shadow: 0 0 8px rgba(0, 224, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.copyButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.copyButton svg {
+  font-size: var(--font-size-sm);
+}
+
 .commandResponsePre {
-  background-color: transparent; /* Inherit from parent */
+  background-color: transparent;
   padding: 0;
   border-radius: 0;
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-family: 'Fira Code', 'Cascadia Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: var(--font-size-sm);
   color: var(--color-accent-green);
   overflow-x: auto;
   white-space: pre-wrap;
+  word-break: break-word;
   border: none;
-  line-height: 1.4;
+  line-height: 1.5;
+  tab-size: 2;
+  text-align: left;
 }
+
 
 /* Modal Specific Styles - Consistent with overall theme */
 .modalOverlay {
@@ -731,7 +831,7 @@ body {
   background: none;
   border: none;
   color: var(--color-text-secondary);
-  font-size: var(--font-size-xl); /* Larger icon for easy targeting */
+  font-size: var(--font-size-xl);
   line-height: 1;
   padding: var(--spacing-sm);
   border-radius: 50%;
@@ -744,7 +844,7 @@ body {
 }
 
 /* Prevent background scroll when modal is open */
-body.modal-open {
+body.modalOpen {
   overflow: hidden;
 }
 
@@ -805,13 +905,13 @@ body.modal-open {
 .summaryCardIcon svg,
 .searchIcon svg,
 .deviceIcon svg,
-.cardActionButton svg, /* Updated */
+.cardActionButton svg,
 .modalCloseButton svg,
 .loadingMessage svg,
 .emptyMessage svg,
 .errorMessage svg {
   vertical-align: middle;
-  line-height: 1; /* Helps with precise centering */
+  line-height: 1;
 }
 
 /* Form Specific Styles for Modal */
@@ -850,7 +950,7 @@ body.modal-open {
   display: flex;
   gap: var(--spacing-md);
   margin-top: var(--spacing-md);
-  justify-content: flex-end; /* Align buttons to the right */
+  justify-content: flex-end;
 }
 
 .buttonAddReal,
@@ -869,7 +969,7 @@ body.modal-open {
 }
 
 .buttonAddReal {
-  background-color: var(--color-accent-green); /* Green for 'Real' */
+  background-color: var(--color-accent-green);
   color: var(--color-bg-primary);
   box-shadow: 0 4px 10px rgba(57, 255, 136, 0.3);
 }
@@ -880,7 +980,7 @@ body.modal-open {
 }
 
 .buttonAddSimulated {
-  background-color: var(--color-accent-blue); /* Blue for 'Simulated' */
+  background-color: var(--color-accent-blue);
   color: var(--color-bg-primary);
   box-shadow: 0 4px 10px rgba(0, 224, 255, 0.3);
 }
