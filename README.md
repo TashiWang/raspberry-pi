@@ -143,7 +143,7 @@ MIT License
 
 ## Screenshots
 
-_Add screenshots of your dashboard UI here!_
+![alt text](frontend/public/image.png)
 
 ---
 
