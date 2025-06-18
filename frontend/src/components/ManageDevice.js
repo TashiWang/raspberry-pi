@@ -467,7 +467,7 @@ const ManageDevices = () => {
 
                 {/* Commands Section for selected device */}
                 <div className={styles.commandSection}>
-                  <h4 className={styles.commandTitle}>Commands</h4>
+                  {/* <h4 className={styles.commandTitle}>Commands</h4> */}
                   <div className={styles.commandButtonsGroup}>
                     {/* Common command buttons */}
                     {['system_info', 'network_info', 'disk_usage', 'update_system', 'reboot_pi', 'shutdown_pi'].map(cmd => (
@@ -524,7 +524,7 @@ const ManageDevices = () => {
                     </div>
                     {/* Pre-formatted tag to display JSON response, with ref for copying */}
                     <pre ref={commandResponseRef} className={styles.commandResponsePre}>
-                      {commandResponse ? formatJson(commandResponse) : 'Awaiting command response...'}
+                      {commandResponse ? formatJson(commandResponse) : ''}
 
                     </pre>
                   </div>
